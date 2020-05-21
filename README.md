@@ -1,4 +1,4 @@
-# good-application
+# bad-application
 
 ## Project setup
 
