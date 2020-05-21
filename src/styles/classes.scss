@@ -1,0 +1,23 @@
+
+/* FORMS */
+.form {
+  background-color: $color-main;
+  color: white;
+}
+
+.form__field {
+  margin-bottom: 16px;
+
+  label {
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+}
+
+/* CARDS */
+.card {
+  padding: 12px;
+  border: 1px solid #1b262c;
+  border-radius: 4px;
+}

@@ -1,13 +1,7 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <style lang="scss">
-@import "@/styles/card.scss";
-
-body {
-  font-family: sans-serif;
-}
+@import '@/styles';
 </style>

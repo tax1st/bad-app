@@ -1,110 +1,103 @@
 <template>
-  <div class="container">
-    <div class="todoForm card">
-      <div class="form__title">Добавить новое задание</div>
-      <form @submit.prevent="submitForm">
+  <div class="wrapper">
+    <div class="form card">
+      <h2>Добавить новое задание</h2>
+
+      <form @submit.prevent="addTodo">
         <div class="form__field">
-          <label for="todoTitle" class="label">Заголовок</label>
-          <input required v-model="newTodo.title" id="todoTitle" />
+          <label>
+            <h5>Заголовок</h5>
+            <input required v-model="newTodo.title" />
+          </label>
         </div>
+
         <div class="form__field">
-          <label for="todoDescription" class="label">Описание</label>
-          <input v-model="newTodo.description" id="todoDescription" />
+          <label>
+            <h5>Описание</h5>
+            <input v-model="newTodo.description" />
+          </label>
         </div>
         <button>Добавить</button>
       </form>
     </div>
 
-    <div class="todo-list">
-      <todo
-        v-for="(todo, i) in todos"
-        @toggle="toggleTodo(i)"
-        @delete="removeTodo(i)"
-        :title="todo.title"
-        :description="todo.description"
-        :done="todo.done"
-      ></todo>
-    </div>
+    <ul>
+      <li v-for="(todo, i) in todos" :key="todo.uid">
+        <todo
+          @toggle="toggleTodo(i)"
+          @delete="removeTodo(i)"
+          :title="todo.title"
+          :description="todo.description"
+          :done="todo.done"
+        />
+      </li>
+    </ul>
   </div>
 </template>
+
 <script>
-import todo from "@/components/Todo.vue";
+import BaseTodo from "@/components/BaseTodo";
 
 export default {
   name: "Main",
   components: {
-    todo
+    'todo': BaseTodo
   },
   data() {
+    const todos = [
+      {
+        uid: 0,
+        title: "Помыть посуду",
+        description: "Ложки и вилки тоже считаются! Дедлайн в четверг 4 мая.",
+        done: false
+      },
+      {
+        uid: 1,
+        title: "Выбрать фильм на вечер",
+        description: "Не хоррор!",
+        done: true
+      }
+    ]
+
     return {
+      uid: todos.length,
       newTodo: {
         title: "",
-        description: ""
+        description: "",
+        done: false
       },
-      todos: [
-        {
-          title: "Помыть посуду",
-          description: "Ложки и вилки тоже считаются! Дедлайн в четверг 4 мая.",
-          done: false
-        },
-        {
-          title: "Выбрать фильм на вечер",
-          description: "Не хоррор!",
-          done: true
-        }
-      ]
+      todos
     };
   },
   methods: {
-    submitForm() {
-      this.addTodo(this.newTodo.title, this.newTodo.description);
-      this.newTodo.title = "";
-      this.newTodo.description = "";
-    },
-    addTodo(title, description) {
+    addTodo() {
       this.todos.push({
-        title,
-        description,
-        done: false
+        ...this.newTodo,
+        uid: ++this.uid
       });
+
+      this.resetNewTodo();
     },
     removeTodo(i) {
       this.todos.splice(i, 1);
     },
     toggleTodo(i) {
       this.todos[i].done = !this.todos[i].done;
+    },
+    resetNewTodo() {
+      this.newTodo.title = "";
+      this.newTodo.description = "";
+      this.newTodo.done = false;
     }
   }
 };
 </script>
-<style lang="scss" scoped>
-$color-main: #1b262c;
 
-.container {
+<style lang="scss" scoped>
+@import "@/styles";
+
+.wrapper {
   max-width: 800px;
   margin: auto;
-}
-
-.todo-list {
-  .Todo {
-    margin: 10px 0;
-  }
-}
-.todoForm {
-  background-color: $color-main;
-  color: white;
-}
-.label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-  font-weight: bold;
-}
-.form__field {
-  margin-bottom: 16px;
-}
-.form__title {
-  font-size: 22px;
-  margin-bottom: 16px;
 }
 </style>
